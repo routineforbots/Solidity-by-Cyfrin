@@ -31,7 +31,7 @@ contract TypesExamples {
 
 //Functions
 
-contract SimpleStorage {
+contract SimpleStorage0 {
  
     uint256 public favouriteNumber; //default visibility is internal unless the public keyword is used
     //public keyword also gets getter function to the variable
@@ -48,5 +48,55 @@ contract SimpleStorage {
     }
 
     
+}
+
+
+//Arrays and structs
+
+contract SimpleStorage {
+ 
+    uint256 myFavouriteNumber; //default visibility is internal unless the public keyword is used (e.g. uint256 public favouriteNumber)
+
+    uint256[] listOfFavoriteNumbers; //array of numbers
+
+    //we can create our own type with keyword struct
+    struct Person {
+        uint256 favouriteNumber;
+        string name;
+    }
+
+    
+    //creation of Person custom object with parameters
+    // Person public john = Person(3, "John");
+    // Person public pat = Person(7, "Pat");
+    /* different notation: 
+    Person public pat = Person({favouriteNumber: 7, name: "Pat"});
+    */
+
+    //We create array of type Person
+    //It is a dynamic array because size of the array can change
+    Person[] public listOfPeople; //[] - empty list by default
+
+    //Static array can be defined with the number: 
+    //Person[3] public listOfPeople;
+
+
+    function store(uint256 _favNumber) public {
+        myFavouriteNumber = _favNumber;
+    }
+
+    //view, pure
+    function retrieve() public view returns(uint256) {
+        return myFavouriteNumber;
+    }
+
+    function addPerson(uint256 _favNumber, string memory _name) public {
+        listOfPeople.push(Person(_favNumber, _name));
+
+        //Another way to define it:
+        // Person memory newPerson = Person(_favNumber, _name);
+        // listOfPeople.push(newPerson);
+    }
+
 }
 
