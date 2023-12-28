@@ -25,7 +25,7 @@ contract TypesExamples {
     //bytes and bytes with the number (e.g. bytes32) are diferent things
 
     //Default values of the types in no value is given
-    uint256 favouriteNumber; //it has default value is 0
+    uint256 favouriteNumber3; //it has default value is 0
     bool isMarked; // it has default value is false
 }
 
