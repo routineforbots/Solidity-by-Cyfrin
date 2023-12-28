@@ -112,6 +112,15 @@ EVM can access and store information in six places:
         // listOfPeople.push(newPerson);
     }
 
-}
+//Mappings
+//Mapping is a dictionary that returns value based on the input
+mapping(string => uint256) public nameToFavouriteNumber;
 
+//we need to update addPerson function
+    function addPersonMap(uint256 _favNumber, string memory _name) public {
+        listOfPeople.push(Person(_favNumber, _name));
+        nameToFavouriteNumber[_name] = _favNumber;
+    }
+
+}
 
