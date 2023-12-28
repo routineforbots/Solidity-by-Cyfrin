@@ -53,7 +53,7 @@ contract SimpleStorage0 {
 
 //Arrays and structs
 
-contract SimpleStorage {
+contract SimpleStorage1 {
  
     uint256 myFavouriteNumber; //default visibility is internal unless the public keyword is used (e.g. uint256 public favouriteNumber)
 
@@ -90,6 +90,20 @@ contract SimpleStorage {
         return myFavouriteNumber;
     }
 
+
+//Memory storage and calldata
+/*
+EVM can access and store information in six places:
+- Memory - temporary variable can be changed 
+- Calldata - temporary, same as memory but variable can't be changed
+- Storage - permanent variable, can't be used for temprorary variables
+- Stack
+- Code
+- Logs
+*/
+
+//memory and calldata keyword - means temporary variable
+//strings, arrays and structs are special variables so keyword must be declared explicitly
     function addPerson(uint256 _favNumber, string memory _name) public {
         listOfPeople.push(Person(_favNumber, _name));
 
@@ -99,4 +113,5 @@ contract SimpleStorage {
     }
 
 }
+
 
