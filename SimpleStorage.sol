@@ -5,11 +5,19 @@ pragma solidity  ^0.8.22; // stating the usage of .22 version of solidity and ne
 // more specific declaration of version: pragma solidity >=0.8.22 <0.8.24
 
 
-//Basic Types: boolean, uint (positive whole number), int(negative/positive whole number), address, bytes, string
+/*
+Basic Types: 
+boolean, 
+uint (positive whole number), 
+int(negative/positive whole number), 
+address, 
+bytes, 
+string
+*/
 
 contract TypesExamples {
     bool hasFavouriteNumber = true;
-    uint256 favouriteNumber = 88; //uint256 = uint in terms of size
+    uint256 favouriteNumber = 88; //uint256 == uint in terms of size in memory
     int256 favouriteNumber2 = -88;
     string favouriteNumberInText = "88";
     address myAddress = 0x76F5849baA479b15246a6D189ca3a0bA6E8Ea64D;
