@@ -103,7 +103,7 @@ EVM can access and store information in six places:
 */
 
 //memory and calldata keyword - means temporary variable
-//strings, arrays and structs are special variables so keyword must be declared explicitly
+//string, array, struct, mapping are special variables so keyword must be declared explicitly
     function addPerson(uint256 _favNumber, string memory _name) public {
         listOfPeople.push(Person(_favNumber, _name));
 
