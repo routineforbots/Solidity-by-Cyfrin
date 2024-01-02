@@ -1,11 +1,14 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.22;
 
-import "./SimpleStorage.sol";
+//simple import of another contract:
+// import "./SimpleStorage.sol";
+//but named import - where we point to the specific contracts rather than whole .sol file - is beter:
+import {SimpleStorage, SimpleStorage2} from "./SimpleStorage.sol";
 
 contract StorageFactory {
 
-    SimpleStorage public simpleStorage; // syntax: type -> visibility -> name
+    SimpleStorage public simpleStorage; // creation of variable of SimpleStorage contract type. Syntax: type -> visibility -> name
 
 
     function CreateSimpleStorageContract() public {
@@ -14,3 +17,4 @@ contract StorageFactory {
         
     }
 }
+
