@@ -1,0 +1,16 @@
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.22;
+
+import "./SimpleStorage.sol";
+
+contract StorageFactory {
+
+    SimpleStorage public simpleStorage; // syntax: type -> visibility -> name
+
+
+    function CreateSimpleStorageContract() public {
+        simpleStorage = new SimpleStorage(); //variable gets value from which is return as the result execution of contract SimpleStorage() from SimpleStorage.sol
+
+        
+    }
+}
