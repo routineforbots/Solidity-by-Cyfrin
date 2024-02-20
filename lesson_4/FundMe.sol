@@ -58,6 +58,7 @@ contract FundMe {
 
     }
     //we need function which uses Oracle (Chainlink) to get current price of ETH in terms of USD
+
     function getPrice() public view returns (uint256) {
         // we need an address of Chainlink contract: 0x694AA1769357215DE4FAC081bf1f309aDC325306
 
