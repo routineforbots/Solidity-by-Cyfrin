@@ -29,6 +29,10 @@ contract FundMe {
 
     uint256 public myValue = 1; //value to showcase transaction revert
 
+    address[] public funders;
+
+    mapping(address funder => uint256 amountFunded) public addressToAmountFunded; //we want to track founders and their transactions
+
     function fundIntro() public payable  {
 
         // 1. How to send ETH to this contract - add keyword payable to the function 
@@ -49,6 +53,9 @@ contract FundMe {
         // allow users to send money
         // have a minimum $ sent as $5
         require(getConversionRate(msg.value) >= minUsd, "you are sending not enough ETH");
+        funders.push(msg.sender); //saving senders of the transactions into our array
+        addressToAmountFunded[msg.sender] = addressToAmountFunded[msg.sender] + msg.value; //we are tracking the history of trasactions per funder: old txs + new tx
+
     }
     //we need function which uses Oracle (Chainlink) to get current price of ETH in terms of USD
     function getPrice() public view returns (uint256) {
