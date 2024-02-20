@@ -44,11 +44,11 @@ contract FundMe {
 
     }
 
-    uint256 public minUsd = 5;
+    uint256 public minUsd = 5 * (10 ** 18); // 5 represented in format of 5e18
     function fund() public payable {
         // allow users to send money
         // have a minimum $ sent as $5
-        require(msg.value >= minUsd, "you are sending less then 5 USD");
+        require(getConversionRate(msg.value) >= minUsd, "you are sending not enough ETH");
     }
     //we need function which uses Oracle (Chainlink) to get current price of ETH in terms of USD
     function getPrice() public view returns (uint256) {
@@ -66,18 +66,32 @@ contract FundMe {
         (uint80 roundId, int answer, uint256 startedAt, uint256 updatedAt, uint80 answeredInRound) = priceFeed.latestRoundData();
         the description of these variables is located here: https://github.com/smartcontractkit/chainlink/blob/develop/contracts/src/v0.6/interfaces/AggregatorV3Interface.sol
         
-        but we only need one variable to be returned, we can simplify definition:
+        but we only need one variable to be returned:
         */
-        (, int answer, , , ) = priceFeed.latestRoundData();
+        (, int256 price, , , ) = priceFeed.latestRoundData();
 
-        // int answer - is in our case is prie of ETH in terms of USD and returns value without decimals, e.g. 4000.00000000
-        return uint256(answer) * 1e10; // we are normalizing int answer and msg.value and making a type casting int -> uint256
+        // int256 answer - is in our case is price of ETH in terms of USD and returns value without decimals, e.g. 4000.00000000
+        return uint256(price) * 1e10; // we are normalizing int answer and msg.value and making a type casting int -> uint256
         //BTW in Solidity we don't have decimal numbers and only work with the whole numbers!!!
     }
 
 
     //function which performs conversion of provided value based on current price of ETH in USD
-    function getConversionReate() public {}
+    function getConversionRate(uint256 ethAmount) public view returns (uint256) {
+        uint256 ethPrice = getPrice();
+
+        //and we are deviding by 1e18 because: 
+        // 1000000000000000000 * 1000000000000000000 = 1000000000000000000000000000000000000 which is 32 places and we need to reduce back to 18 places - 1000000000000000000
+        uint256 ethAmountInUsd = (ethAmount * ethPrice) / 1e18; //we always multiply in Solidity before we devide because we operate with a whole numbers and not in decimal!
+        return ethAmountInUsd;
+
+        /* Example
+        What is the price of 1 ETH (ethAmount) = 1_000000000000000000
+        We get current ethPrice (2000_000000000000000000 - a lot of zeros after floating point represented as a whole number)
+        The output will be: (2000_000000000000000000 * 1_000000000000000000) / 1e18 = $2000 = 1ETH
+        */
+
+    }
 
     
 
