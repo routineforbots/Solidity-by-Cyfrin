@@ -29,9 +29,9 @@ contract FundMe {
 
     uint256 public myValue = 1; //value to showcase transaction revert
 
-    address[] public funders;
+    address[] public funders; //array to track funders
 
-    mapping(address funder => uint256 amountFunded) public addressToAmountFunded; //we want to track founders and their transactions
+    mapping(address funder => uint256 amountFunded) public addressToAmountFunded; //we want to track each founder and his transactions
 
     function fundIntro() public payable  {
 
@@ -58,7 +58,6 @@ contract FundMe {
 
     }
     //we need function which uses Oracle (Chainlink) to get current price of ETH in terms of USD
-
     function getPrice() public view returns (uint256) {
         // we need an address of Chainlink contract: 0x694AA1769357215DE4FAC081bf1f309aDC325306
 
@@ -101,7 +100,9 @@ contract FundMe {
 
     }
 
-    
+    function getVersion() public view returns(uint256) {
+        return AggregatorV3Interface(0x694AA1769357215DE4FAC081bf1f309aDC325306).version();
+    }
 
 
 
