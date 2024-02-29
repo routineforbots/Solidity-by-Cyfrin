@@ -54,7 +54,7 @@ contract FundMe {
     // but to revert transaction in case of error we need an additional line
     require(sendSuccess, "Send failed");
 
-    // 3. call - low level powerfull command
+    // 3. call - low level powerfull command which doesn't have gas limit
     (bool callSuccess, bytes memory dataReturned) = payable(msg.sender).call{value: address(this).balance}(""); // within "" we can call specific function
     // without specifying function to call we are using this like a transaction
     // our function returns 2 vaiables: 
