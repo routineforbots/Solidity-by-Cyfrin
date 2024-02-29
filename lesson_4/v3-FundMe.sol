@@ -39,7 +39,7 @@ contract FundMe {
 
     funders = new address[](0);
 
-    (bool callSuccess, bytes memory dataReturned) = payable(msg.sender).call{value: address(this).balance}(""); // within "" we can call specific function
+    (bool callSuccess, ) = payable(msg.sender).call{value: address(this).balance}(""); // within "" we can call specific function
     require(callSuccess, "Send failed"); //same thing to revert tx in case of error
 
    }
@@ -50,4 +50,6 @@ contract FundMe {
     _; // modifier is executed first within function and with _; 
     // we mark to execute anything else; we can play with the order and put it before our require() so that require() will be executed at the end
    }
+
+   
 }
