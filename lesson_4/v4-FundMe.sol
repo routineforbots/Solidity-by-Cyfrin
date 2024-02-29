@@ -6,6 +6,7 @@ import {PriceConverter} from './v2-PriceConverter.sol';
 // let's perform a gas optimisation (current tx cost: 745605)
 // for that we will use keywords: constant and immutable (see bellow the usage)
 
+error NotOwner();
 
 contract FundMe {
     using PriceConverter for uint256; 
@@ -46,9 +47,23 @@ contract FundMe {
    }
 
    modifier onlyOwner() {
-    require(msg.sender == i_owner, "Sender is not the owner");
+    // for now this string "Sender..." is saved individually in memory; 
+    // to optimize that we can use custom errors - NotOwner();
+    // require(msg.sender == i_owner, "Sender is not the owner"); 
+    if(msg.sender != i_owner) { revert NotOwner(); } // that is new syntex in Solidity
     _; 
    }
 
+    // What happens if someone sends this contract ETH without calling the fund function correctly
+    // there are 2 special functions in Solidity:
 
+    // receive()
+    receive() external payable { 
+        fund();
+    }
+
+    // fallback()
+    fallback() external payable {
+        fund();
+     }
 }
