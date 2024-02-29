@@ -16,7 +16,8 @@ contract FundMe {
     uint256 public constant MINIMUM_USD = 5e18; // now the tx cost is 725869
 
     address public immutable i_owner; // now the tx cost is 702674
-
+		// immutable variables can be declared one time in the constructor
+		// once it is declared - it can't be changed
     constructor() {
         i_owner = msg.sender;
     }
