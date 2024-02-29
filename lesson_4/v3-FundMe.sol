@@ -27,7 +27,7 @@ contract FundMe {
     }
 
 
-   function withdraw() public {
+   function withdraw() public onlyOwner {
     // when can use modifiers if we have a lot of functions which must be only called by the owner
     // that is why we are commenting the following line and will create the modifier at the bottom
     // require(msg.sender == owner, "Must be the owner!"); // from the constructor
@@ -42,5 +42,12 @@ contract FundMe {
     (bool callSuccess, bytes memory dataReturned) = payable(msg.sender).call{value: address(this).balance}(""); // within "" we can call specific function
     require(callSuccess, "Send failed"); //same thing to revert tx in case of error
 
+   }
+
+   // modifier which will allow us to create a keyword which we can put in any function declaration to quickly add functionality
+   modifier onlyOwner() {
+    require(msg.sender == owner, "Sender is not the owner");
+    _; // modifier is executed first within function and with _; 
+    // we mark to execute anything else; we can play with the order and put it before our require() so that require() will be executed at the end
    }
 }
