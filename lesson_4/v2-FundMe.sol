@@ -9,18 +9,58 @@ contract FundMe {
 
     address[] public funders;
 
+    uint256 public minimumUSD = 5e18;
+
     mapping(address funder => uint256 amountFunded) public addressToAmountFunded;
 
     function fund() public payable {
         //Since we made an attachment, we can call getConversionRate() in a different way:
         // msg.value.getConversionRate() - for that notation msg.value - which is uint256 - gets passed to getConversionRate() function as a first argument "uint256 ethAmount"
-        require(msg.value.getConversionRate() > 1e18, "didn't send enough ETH");
+        require(msg.value.getConversionRate() > minimumUSD, "didn't send enough ETH");
         funders.push(msg.sender);
-        addressToAmountFunded[msg.sender] = addressToAmountFunded[msg.sender] + msg.value; 
+        addressToAmountFunded[msg.sender] += msg.value; 
 
     }
 
 
 
-   // function withdraw() public {}
+   function withdraw() public {
+    // we want to reset all the mappings 
+    // for loop
+    // [1, 2, 3, 4] elements
+    //  0, 1, 2, 3  indexes
+    // for( /* starting index, ending index, step amount */ )
+    for(uint256 funderIndex = 0; funderIndex < funders.length; funderIndex++ /* increment by +1 */ ) {
+        address funder = funders[funderIndex];
+        addressToAmountFunded[funder] = 0;
+    }
+    // reset the array
+    funders = new address[](0); // we are resetting array by creating new one with the length of 0
+
+
+    // withdraw funds back to the function caller
+    // there are 3 ways to do that
+    
+    // 1. transfer - send ETH from the different contracts to each other (with the use of payable addresses)
+    // transfer can be used for transactions with gas less than 2300, otherwise it throws an error and the tx is reverted
+
+    payable(msg.sender).transfer(address(this).balance ); // *this* keyword reffers to the whole contract FundMe
+    /* we are casting msg.sender with payable() so that
+    msg.sender which has type of *address* with the use of payable(msg.sender) will become *payable address*
+    */
+
+    // 2. send - has the same limit of 2300 for gas, but it returns boolean anyway
+    bool sendSuccess = payable(msg.sender).send(address(this).balance);
+    // but to revert transaction in case of error we need an additional line
+    require(sendSuccess, "Send failed");
+
+    // 3. call - low level powerfull command
+    (bool callSuccess, bytes memory dataReturned) = payable(msg.sender).call{value: address(this).balance}(""); // within "" we can call specific function
+    // without specifying function to call we are using this like a transaction
+    // our function returns 2 vaiables: 
+    // callSuccess - true/false
+    // dataReturned - data which is returned by call function (needs *memory* keyword since it returns an array)
+    require(callSuccess, "Send failed"); //same thing to revert tx in case of error
+
+   }
 }
